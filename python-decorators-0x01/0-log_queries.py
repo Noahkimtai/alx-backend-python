@@ -6,27 +6,30 @@ from datetime import datetime
 
 # decorator to lof sql queries
 def log_queries(func):
+
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # logging.basicConfig(
         #     level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
         # )
-        # logging.info(kwargs["querry"])
+        # logging.info(kwargs["query"])
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f" {timestamp}  SQL query: {kwargs["querry"]}")
-        func(*args, **kwargs)
+        print(f" {timestamp}  SQL query: {kwargs["query"]}")
+        return func(*args, **kwargs)
 
     return wrapper
 
 
 @log_queries
-def fetch_all_users(querry):
+def fetch_all_users(query):
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
-    cursor.execute(querry)
+    cursor.execute(query)
     results = cursor.fetchall()
     conn.close()
     return results
 
 
 ### fetch users while logging the query
-users = fetch_all_users(querry="SELECT * FROM users")
+users = fetch_all_users(query="SELECT * FROM users")
+print(users)

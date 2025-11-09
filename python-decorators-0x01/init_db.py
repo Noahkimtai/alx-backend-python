@@ -27,9 +27,9 @@ def init_db():
     VALUES (?, ?, ?, ?)
     """,
         [
-            ("Alice", "Mwangi", "alice@example.com", "guest"),
-            ("Brian", "Otieno", "brian@example.com", "host"),
-            ("Caroline", "Kariuki", "caroline@example.com", "admin"),
+            ("Alice", "Mwangi", "alice1@example.com", "guest"),
+            ("Brian", "Otieno", "brian1@example.com", "host"),
+            ("Caroline", "Kariuki", "caroline1@example.com", "admin"),
         ],
     )
 
