@@ -7,10 +7,12 @@ from datetime import datetime
 # decorator to lof sql queries
 def log_queries(func):
     def wrapper(*args, **kwargs):
-        logging.basicConfig(
-            level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
-        )
-        logging.info(kwargs["querry"])
+        # logging.basicConfig(
+        #     level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
+        # )
+        # logging.info(kwargs["querry"])
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f" {timestamp}  SQL query: {kwargs["querry"]}")
         func(*args, **kwargs)
 
     return wrapper
