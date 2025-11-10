@@ -2,22 +2,22 @@ import asyncio
 import aiosqlite
 
 
-async def async_fetch_users(query):
+async def async_fetch_users():
     async with aiosqlite.connect("users.db") as db:
-        async with db.execute(query) as cursor:
+        async with db.execute("SELECT * FROM users") as cursor:
             return await cursor.fetchall()
 
 
-async def async_fetch_older_users(query, param=()):
+async def async_fetch_older_users():
     async with aiosqlite.connect("users.db") as db:
-        async with db.execute(query, param) as cursor:
+        async with db.execute("SELECT * FROM users WHERE AGE > ?", (40,)) as cursor:
             return await cursor.fetchall()
 
 
 async def fetch_concurrently():
     # Run both queries concurrently
-    users_task = async_fetch_users("SELECT * FROM users")
-    old_users_task = async_fetch_older_users("SELECT * FROM users WHERE AGE > ?", (40,))
+    users_task = async_fetch_users()
+    old_users_task = async_fetch_older_users()
 
     users, old_users = await asyncio.gather(users_task, old_users_task)
 
