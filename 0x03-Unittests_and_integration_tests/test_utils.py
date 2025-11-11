@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""This test file test utility functions"""
 
 import unittest
 from unittest.mock import patch, Mock
@@ -8,6 +9,7 @@ import requests
 
 
 class TestAccessNestedMap(unittest.TestCase):
+    """Tests access_nested_map function"""
 
     @parameterized.expand(
         [
@@ -22,11 +24,13 @@ class TestAccessNestedMap(unittest.TestCase):
 
     @parameterized.expand([({}, ("a",)), ({"a": 1}, ("a", "b"))])
     def test_access_nested_map_exception(self, nested_map, path):
+        """Tests that nested_map_function raises key error on accessing missing keys"""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
 
 
 class TestGetJson(unittest.TestCase):
+    """Test get_json Function"""
 
     @parameterized.expand(
         [
@@ -36,6 +40,7 @@ class TestGetJson(unittest.TestCase):
     )
     @patch("requests.get")
     def test_get_json(self, test_url, test_payload, mock_get):
+        """test that get_json function will return expected payload"""
         mock_response = Mock()
         mock_response.json.return_value = test_payload
         mock_get.return_value = mock_response
@@ -46,13 +51,21 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
+    """Test Memoize"""
+
     def test_memoize(self):
+        """function documentation"""
+
         class TestClass:
+            """test class"""
+
             def a_method(self):
+                """a_method returns 42"""
                 return 42
-            
+
             @TestMemoize
             def a_property(self):
+                """return a_method function"""
                 return self.a_method()
 
 
