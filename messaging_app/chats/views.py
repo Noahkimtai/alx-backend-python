@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 
 
-from .models import Conversation, Message
-from .serializers import ConversationSerializer, MessageSerializer
+from .models import Conversation, Message, User
+from .serializers import ConversationSerializer, MessageSerializer, UserSerializer
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -28,6 +28,18 @@ class MessageViewset(viewsets.ModelViewSet):
 
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+    def perform_create(self, serializer):
+        """Create a new message"""
+
+        serializer.save()
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    "manage messages"
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
     def perform_create(self, serializer):
         """Create a new message"""
