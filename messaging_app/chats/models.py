@@ -21,6 +21,9 @@ class User(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, null=False)
     created_at = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Message(models.Model):
     """Messages between users"""
@@ -31,6 +34,9 @@ class Message(models.Model):
     )
     message_body = models.TextField(null=False)
     sent_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return f"{self.message_body}"
 
 
 class Conversation(models.Model):
@@ -41,3 +47,4 @@ class Conversation(models.Model):
     )
     participants_id = models.ManyToManyField(User, related_name="conversations")
     created_at = models.DateTimeField(default=timezone.now)
+
