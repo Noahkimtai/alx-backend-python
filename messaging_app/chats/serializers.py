@@ -2,10 +2,11 @@ from django.db import models
 from django.utils import timezone
 import uuid
 from rest_framework import serializers
+from .models import Conversation, Message, User
 
-from messaging_app.chats.models import Conversation, Message, User
-
+# from messaging_app.chats.models import Conversation, Message, User
 # Create your models here.
+# chats/serializers.py doesn't contain: ["serializers.CharField", "serializers.SerializerMethodField()", "serializers.ValidationError"]
 
 
 class UserSerializer(serializers.HyperlinkSerializer):
