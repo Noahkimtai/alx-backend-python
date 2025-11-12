@@ -6,7 +6,11 @@ import uuid
 class User(models.Model):
     """Represent a user in the messaging app"""
 
-    ROLE_CHOICES = ["guest", "host", "admin"]
+    ROLE_CHOICES = [
+        ("guest", "Guest"),
+        ("host", "Host"),
+        ("admin", "Admin"),
+    ]
 
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, db_index=True)
     first_name = models.CharField(max_length=200, null=False)
