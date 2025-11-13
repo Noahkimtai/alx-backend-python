@@ -10,30 +10,54 @@ from .models import Conversation, Message, User
 class UserSerializer(serializers.ModelSerializer):
     """Represent a user in the messaging app"""
 
+    ROLE_CHOICES = [
+        ("guest", "Guest"),
+        ("host", "Host"),
+        ("admin", "Admin"),
+    ]
+
+    first_name = serializers.CharField(required=True, max_length=200)
+    last_name = serializers.CharField(required=True, max_length=200)
+    email = serializers.CharField(read_only=True)
+    phone_number = serializers.CharField(max_length=20)
+    role = serializers.ChoiceField(choices=ROLE_CHOICES)
+
+    full_name = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = [
-            "user_id",
             "first_name",
             "last_name",
             "email",
             "phone_number",
             "role",
-            "created_at",
+            "full_name",
         ]
-        read_only_fields = ["user_id", "created_at"]
+
+    def get_full_name(self, obj):
+        """Method to compute full_name on the fly"""
+        return f"{obj.first_name} {obj.last_name}"
 
 
 class MessageSerializer(serializers.ModelSerializer):
     """Messages between users"""
 
     sender = UserSerializer(read_only=True)
+    sender_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
-        fields = ["message_id", "sender", "message_body", "sent_at"]
+        fields = "__all__"
 
-    read_only_fields = ["message_id", "sent_at", "sender"]
+    def validate_message_body(self, value):
+        if not value.strip():
+            raise serializers.ValidationError("Message body cannot be empty")
+
+        return value
+
+    def get_sender_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
 
 
 class ConversationSerializer(serializers.ModelSerializer):
@@ -44,5 +68,4 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Conversation
-        fields = ["conversation_id", "participants", "messages", "created_at"]
-        read_only_fields = ["conversation_id", "created_at"]
+        fields = "__all__"

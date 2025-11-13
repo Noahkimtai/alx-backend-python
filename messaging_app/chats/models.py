@@ -29,12 +29,15 @@ class Message(models.Model):
     """Messages between users"""
 
     message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, db_index=True)
-    sender_id = models.ForeignKey(
+    conversation = models.ForeignKey(
+        "COnversation", on_delete=models.CASCADE, related_name="messages"
+    )
+    sender = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="sent_messages"
     )
     message_body = models.TextField(null=False)
     sent_at = models.DateTimeField(default=timezone.now)
-    
+
     def __str__(self):
         return f"{self.message_body}"
 
@@ -47,4 +50,3 @@ class Conversation(models.Model):
     )
     participants_id = models.ManyToManyField(User, related_name="conversations")
     created_at = models.DateTimeField(default=timezone.now)
-
