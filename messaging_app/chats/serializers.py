@@ -1,6 +1,3 @@
-from django.db import models
-from django.utils import timezone
-import uuid
 from rest_framework import serializers
 from .models import Conversation, Message, User
 
@@ -57,7 +54,7 @@ class MessageSerializer(serializers.ModelSerializer):
         return value
 
     def get_sender_name(self, obj):
-        return f"{obj.first_name} {obj.last_name}"
+        return f"{obj.sender.first_name} {obj.sender.last_name}"
 
 
 class ConversationSerializer(serializers.ModelSerializer):
