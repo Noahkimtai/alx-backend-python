@@ -30,7 +30,9 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient(org_name)
         output = client.org
 
-        mock_get_json.assert_called_once_with(f"https://api.github.com/orgs/{org_name}")
+        mock_get_json.assert_called_once_with(
+            f"https://api.github.com/orgs/{org_name}"
+        )
         self.assertEqual(output, mock_response)
 
     def test_public_repos_url(self):
@@ -38,7 +40,9 @@ class TestGithubOrgClient(unittest.TestCase):
         Verify that the private _public_repos_url attribute correctly extracts
         the repo URL from the organization metadata.
         """
-        fake_org_metadata = {"repos_url": "https://api.github.com/orgs/google/repos"}
+        fake_org_metadata = {
+            "repos_url": "https://api.github.com/orgs/google/repos"
+        }
 
         with patch(
             "client.GithubOrgClient.org",
