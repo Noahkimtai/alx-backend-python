@@ -23,7 +23,8 @@ class TestAccessNestedMap(unittest.TestCase):
 
     @parameterized.expand([({}, ("a",)), ({"a": 1}, ("a", "b"))])
     def test_access_nested_map_exception(self, nested_map, path):
-        """Tests that nested_map_function raises key error on accessing missing keys"""
+        """Tests that nested_map_function raises key error on accessing
+        missing keys"""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
 
