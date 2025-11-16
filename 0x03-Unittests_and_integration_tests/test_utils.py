@@ -38,7 +38,7 @@ class TestGetJson(unittest.TestCase):
             ("http://holberton.io", {"payload": False}),
         ]
     )
-    @patch("requests.get")
+    @patch("utils.requests.get")
     def test_get_json(self, test_url, test_payload, mock_get):
         """test that get_json function will return expected payload"""
         mock_response = Mock()
@@ -54,10 +54,10 @@ class TestMemoize(unittest.TestCase):
     """Test Memoize"""
 
     def test_memoize(self):
-        """function documentation"""
+        """Test that memoize function caches the result of a method"""
 
         class TestClass:
-            """test class"""
+            """Memoize test class"""
 
             def a_method(self):
                 """a_method returns 42"""
@@ -67,6 +67,15 @@ class TestMemoize(unittest.TestCase):
             def a_property(self):
                 """return a_method function"""
                 return self.a_method()
+
+        test_obj = TestClass()
+        with patch.object(TestClass, "a_method", return_value=42) as mock:
+            first = test_obj.a_property
+            second = test_obj.a_property
+
+        self.assertEqual(first, 42)
+        self.assertEqual(second, 42)
+        mock.assert_called_once()
 
 
 if __name__ == "__main__":
