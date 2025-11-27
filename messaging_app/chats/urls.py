@@ -3,7 +3,6 @@ from rest_framework_nested import routers
 
 from .views import ConversationViewSet, MessageViewset, UserViewSet
 
-MessageViewset
 router = routers.DefaultRouter()
 router.register(r"conversations", ConversationViewSet, basename="conversation")
 router.register(r"messages", MessageViewset, basename="message")
@@ -18,5 +17,7 @@ conversations_router.register(
 urlpatterns = [
     path("", include(router.urls)),
     path("", include(conversations_router.urls)),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path(
+        "api-auth/", include("rest_framework.urls", namespace="rest_framework")
+    ),
 ]

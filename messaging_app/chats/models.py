@@ -12,10 +12,14 @@ class User(models.Model):
         ("admin", "Admin"),
     ]
 
-    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, db_index=True)
+    user_id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, db_index=True
+    )
     first_name = models.CharField(max_length=200, null=False)
     last_name = models.CharField(max_length=200, null=False)
-    email = models.CharField(max_length=200, unique=True, null=False, db_index=True)
+    email = models.CharField(
+        max_length=200, unique=True, null=False, db_index=True
+    )
     password_hash = models.CharField(max_length=255, null=False)
     phone_number = models.CharField(max_length=20)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, null=False)
@@ -28,7 +32,9 @@ class User(models.Model):
 class Message(models.Model):
     """Messages between users"""
 
-    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, db_index=True)
+    message_id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, db_index=True
+    )
     conversation = models.ForeignKey(
         "COnversation", on_delete=models.CASCADE, related_name="messages"
     )
@@ -48,5 +54,7 @@ class Conversation(models.Model):
     conversation_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True
     )
-    participants_id = models.ManyToManyField(User, related_name="conversations")
+    participants_id = models.ManyToManyField(
+        User, related_name="conversations"
+    )
     created_at = models.DateTimeField(default=timezone.now)

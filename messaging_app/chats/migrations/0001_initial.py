@@ -27,7 +27,12 @@ class Migration(migrations.Migration):
                 ),
                 ("first_name", models.CharField(max_length=200)),
                 ("last_name", models.CharField(max_length=200)),
-                ("email", models.CharField(db_index=True, max_length=200, unique=True)),
+                (
+                    "email",
+                    models.CharField(
+                        db_index=True, max_length=200, unique=True
+                    ),
+                ),
                 ("password_hash", models.CharField(max_length=255)),
                 ("phone_number", models.CharField(max_length=20)),
                 (
@@ -41,7 +46,10 @@ class Migration(migrations.Migration):
                         max_length=20,
                     ),
                 ),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -57,7 +65,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("message_body", models.TextField()),
-                ("sent_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "sent_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "sender_id",
                     models.ForeignKey(
@@ -80,7 +91,10 @@ class Migration(migrations.Migration):
                         serialize=False,
                     ),
                 ),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "participants_id",
                     models.ManyToManyField(

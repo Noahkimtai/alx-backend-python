@@ -2,7 +2,11 @@ from rest_framework import viewsets
 
 
 from .models import Conversation, Message, User
-from .serializers import ConversationSerializer, MessageSerializer, UserSerializer
+from .serializers import (
+    ConversationSerializer,
+    MessageSerializer,
+    UserSerializer,
+)
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
