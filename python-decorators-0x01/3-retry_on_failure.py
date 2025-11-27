@@ -31,7 +31,9 @@ def retry_on_failure(retries=3, delay=1):
                     return func(*args, **kwargs)
                 except sqlite3.Error as e:
                     attempt += 1
-                    print(f"Attempt {attempt} failed: {e}. Retrying in {delay}s...")
+                    print(
+                        f"Attempt {attempt} failed: {e}. Retrying in {delay}s..."
+                    )
                     time.sleep(delay)
             # final attempt
             return func(*args, **kwargs)

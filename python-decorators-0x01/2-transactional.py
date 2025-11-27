@@ -36,7 +36,9 @@ def transactional(func):
 @transactional
 def update_user_email(conn, user_id, new_email):
     cursor = conn.cursor()
-    cursor.execute("UPDATE users SET email= ? WHERE id= ?", (new_email, user_id))
+    cursor.execute(
+        "UPDATE users SET email= ? WHERE id= ?", (new_email, user_id)
+    )
 
 
 update_user_email(user_id=1, new_email="caroline1@example.com")
