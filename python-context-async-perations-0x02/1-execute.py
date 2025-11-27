@@ -15,7 +15,9 @@ class ExecuteQuery:
         """open db session context"""
         print("establishing db connection")
         self.connection_object = sqlite3.connect(self.db)
-        self.results = self.query_db(self.connection_object, self.query, self.param)
+        self.results = self.query_db(
+            self.connection_object, self.query, self.param
+        )
         return self.results
 
     def __exit__(self, exc_type, exc_value, exc_tb):
@@ -33,7 +35,9 @@ class ExecuteQuery:
         return results
 
 
-with ExecuteQuery("users.db", "SELECT * FROM users WHERE age > ?", (25,)) as res:
+with ExecuteQuery(
+    "users.db", "SELECT * FROM users WHERE age > ?", (25,)
+) as res:
     print(res)
 
 with ExecuteQuery("users.db", "SELECT * FROM users WHERE id = 1") as res:
