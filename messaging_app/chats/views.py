@@ -1,7 +1,9 @@
 from rest_framework import viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
 
 from .filters import MessageFilter
+from .permissions import IsParticipantOfConversation
 
 from .pagination import SmallResultsSetPagination
 
@@ -20,11 +22,14 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
+    pagination_class = SmallResultsSetPagination
 
     def perform_create(self, serializer):
-        """Create a new conversation"""
+        participant_ids = self.request.data.get("participant_ids", [])
         conversation = serializer.save()
-        return conversation
+        if participant_ids:
+            conversation.participants.set(participant_ids)
 
 
 class MessageViewset(viewsets.ModelViewSet):
@@ -32,15 +37,19 @@ class MessageViewset(viewsets.ModelViewSet):
 
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
     pagination_class = SmallResultsSetPagination
-
-    def perform_create(self, serializer):
-        """Create a new message"""
-
-        serializer.save()
 
     filter_backends = [DjangoFilterBackend]
     filterset_class = MessageFilter
+
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
+
+    # def get_queryset(self):
+    #     return Message.objects.filter(
+    #         Conversation_participants=self.request.user
+    #     )
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -48,15 +57,4 @@ class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-    def get_queryset(self):
-        conversation_id = self.kwargs.get("conversation_pk")
-        if conversation_id:
-            return Message.objects.filter(conversation_id=conversation_id)
-        return Message.objects.all()
-
-    def perform_create(self, serializer):
-        """Create a new message"""
-        conversation_id = self.kwargs.get("conversation_pk")
-        conversation = Conversation.objects.get(pk=conversation_id)
-        serializer.save(conversation=conversation)
+    pagination_class = SmallResultsSetPagination

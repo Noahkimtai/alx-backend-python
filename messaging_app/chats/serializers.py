@@ -45,7 +45,14 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = "__all__"
+        fields = [
+            "message_id",
+            "sender",  # nested UserSerializer
+            "sender_name",  # SerializerMethodField
+            "message_body",
+            "sent_at",
+            "conversation",
+        ]
 
     def validate_message_body(self, value):
         if not value.strip():
@@ -61,8 +68,17 @@ class ConversationSerializer(serializers.ModelSerializer):
     """Conversations between users"""
 
     participants = UserSerializer(many=True, read_only=True)
+    participant_ids = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=User.objects.all(), write_only=True
+    )
     messages = MessageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Conversation
-        fields = "__all__"
+        fields = [
+            "conversation_id",
+            "participants",
+            "participant_ids",
+            "messages",
+            "created_at",
+        ]

@@ -54,7 +54,5 @@ class Conversation(models.Model):
     conversation_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True
     )
-    participants_id = models.ManyToManyField(
-        User, related_name="conversations"
-    )
+    participants = models.ManyToManyField(User, related_name="conversations")
     created_at = models.DateTimeField(default=timezone.now)
