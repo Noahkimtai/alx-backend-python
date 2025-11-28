@@ -1,7 +1,9 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework import permissions
+
+# from rest_framework import permissions
 
 
-class IsParticipantOfConversation(BasePermission):
+class IsParticipantOfConversation(permissions.BasePermission):
     """
     Only allow users who are participants of the conversation access to messages of the conversation
     """
