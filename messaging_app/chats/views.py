@@ -1,5 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
+from django_filters.rest_framework import DjangoFilterBackend
 
+from .filters import MessageFilter
+
+from .pagination import SmallResultsSetPagination
 
 from .models import Conversation, Message, User
 from .serializers import (
@@ -28,11 +32,15 @@ class MessageViewset(viewsets.ModelViewSet):
 
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    pagination_class = SmallResultsSetPagination
 
     def perform_create(self, serializer):
         """Create a new message"""
 
         serializer.save()
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = MessageFilter
 
 
 class UserViewSet(viewsets.ModelViewSet):
