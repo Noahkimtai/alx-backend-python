@@ -43,7 +43,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
         root_messages = (
             Message.objects.filter(parent_message__isnull=True)
-            .filter(Q(sender=user) | Q(receiver=user))
+            .filter(Q(sender=request.user) | Q(receiver=user))
             .select_related("sender", "receiver")
             .prefetch_related("replies")
         )
