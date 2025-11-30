@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib import User
 from django.utils import timezone
 
+
 class Message(models.Model):
 
     sender = models.ForeignKey(
@@ -22,7 +23,10 @@ class Message(models.Model):
 
 
 class MessageHistory(models.Model):
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="history")
+    message = models.ForeignKey(
+        Message, on_delete=models.CASCADE, related_name="history"
+    )
+    edited_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=False)
     old_content = models.TextField()
     edited_at = models.DateTimeField(default=timezone.now)
 

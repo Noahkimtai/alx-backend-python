@@ -4,7 +4,8 @@ from serializers import MessageHistorySerializer
 
 
 class MessageSerializer:
-    history = MessageHistorySerializer(many=True, read_only = True)
+    history = MessageHistorySerializer(many=True, read_only=True)
+
     class Meta:
         model = Message
         fileds = ["id", "sender", "receiver", "timestamp"]
@@ -28,6 +29,8 @@ class NotificationSerializer:
 
 
 class MessageHistorySerializer(serializers.ModelSerializer):
+    edited_by = serializers.StringRelatedField()
+
     class meta:
         model = MessageHistory
-        fields = ["old_content", "edited_at"]
+        fields = ["old_content", "edited_by", "edited_at"]

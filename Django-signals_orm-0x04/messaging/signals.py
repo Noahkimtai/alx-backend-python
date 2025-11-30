@@ -29,5 +29,6 @@ def save_previous_message(sender, instance, **kwargs):
         MessageHistory.objects.create(
             message = old_message,
             old_content = old_message.content
+            edited_by = instance.sender
         )
         instance.edited = True # Mark message as edited
