@@ -12,6 +12,13 @@ class Message(models.Model):
     receiver = models.ForeignKey(
         User, related_name="received_message", on_delete=models.CASCADE
     )
+    parent_message = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="replies"
+    )
 
     content = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
