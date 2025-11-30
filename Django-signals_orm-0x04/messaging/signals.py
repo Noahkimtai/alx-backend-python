@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 
 from messaging.models import Message, Notification, MessageHistory
@@ -32,3 +32,12 @@ def save_previous_message(sender, instance, **kwargs):
             edited_by = instance.sender
         )
         instance.edited = True # Mark message as edited
+
+@receiver(post_delete, sender = User)
+def cleanup_user_related_data(sender, instance, **kwargs):
+    Message.objects.filter(sender=instance).delete()
+    Message.objects.filter(receiver=instance).delete()
+    Notification.objects.filter(user=instance).delete()
+    MessageHistory.objects.filter(edited_by=instance).update(edited_by=None)
+
+    print(f"Cleanup completed for deleted user: {instance.username}")

@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets
 from rest_framework import IsAuthenticated
+from rest_framework.response import Response
+
 from serializers import MessageSerializer, NotificationSerializer
 from models import Notification, Message
 
@@ -27,3 +29,12 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Notification.objects.filter(user=user)
+
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_user(request):
+    user = request.user
+    username = user.username
+    user.delete()
+    return Response({"message": f"User '{username}' deleted successfully."})
