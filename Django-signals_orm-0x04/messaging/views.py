@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 from serializers import MessageSerializer, NotificationSerializer
 from models import Notification, Message
@@ -15,7 +16,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Message.objects.filter(receiver=user) | Message.objects.filter(
-            sender=user
+            sender=self.request.user
         )
 
     def perform_create(self, serializer):
@@ -49,6 +50,20 @@ class MessageViewSet(viewsets.ModelViewSet):
 
         thread_data = [self.get_thread(msg) for msg in root_messages]
         return Response(thread_data)
+
+    @action(detail=False, methods=["get"])
+    def unread(self, request):
+        user = request.user
+        unread_messages = Message.unread.for_user(user)
+        serializer = MessageSerializer(unread_messages, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["post"])
+    def mark_read(self, request, pk=None):
+        message = get_object_or_404(Message, pk=pk, receiver=request.user)
+        message.read = True
+        message.save()
+        return Response({"status": "marked as read"})
 
 
 class NotificationViewSet(viewsets.ModelViewSet):

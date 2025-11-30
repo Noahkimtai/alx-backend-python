@@ -19,8 +19,8 @@ class Message(models.Model):
         blank=True,
         related_name="replies"
     )
-
     content = models.TextField()
+    read = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
     edited = models.BooleanField(default=False)
@@ -28,6 +28,15 @@ class Message(models.Model):
     def __str__(self):
         return f"{self.sender} -> {self.receiver}"
 
+class UnreadMessagesManager(models.Manager):
+    """Custom manager that returns unread messages for a given user"""
+
+    def for_user(self, user):
+        return self.get_queryset().filter(
+            receiver = user,
+            read = False
+        ).only("id", "content", "sender_id", "timestamp") # optimize by fetching fewer fields
+    
 
 class MessageHistory(models.Model):
     message = models.ForeignKey(
