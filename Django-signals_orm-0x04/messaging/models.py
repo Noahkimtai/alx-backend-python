@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib import User
-
+from django.utils import timezone
 
 class Message(models.Model):
 
@@ -13,10 +13,21 @@ class Message(models.Model):
     )
 
     content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    edited = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.sender} -> {self.receiver}"
+
+
+class MessageHistory(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="history")
+    old_content = models.TextField()
+    edited_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"History for message{self.message.id} at {self.edited_at}"
 
 
 class Notification(models.Model):
