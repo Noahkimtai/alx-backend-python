@@ -4,6 +4,8 @@ from rest_framework import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from serializers import MessageSerializer, NotificationSerializer
 from models import Notification, Message
@@ -13,6 +15,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated]
 
+    @method_decorator(cache_page(60))
     def get_queryset(self):
         user = self.request.user
         return Message.objects.filter(receiver=user) | Message.objects.filter(
