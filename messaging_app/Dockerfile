@@ -30,7 +30,7 @@ COPY . /app/
 EXPOSE 8000
 
 # Run Django developement server by default
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 
 # For production ready container:
 # RUN pip install gunicorn
