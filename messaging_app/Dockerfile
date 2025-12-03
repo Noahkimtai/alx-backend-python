@@ -7,11 +7,14 @@ ENV PYTHONUNBUFFERED=1
 # set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies psycop2
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
     && apt-get clean
+
+#mysql dependencies
+RUN apt-get install -y default-libmysqlclient-dev build-essential
 
 # copy requirements to /app
 COPY requirements.txt /app/
