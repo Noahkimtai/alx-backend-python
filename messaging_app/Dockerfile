@@ -14,13 +14,18 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 #mysql dependencies
-RUN apt-get install -y default-libmysqlclient-dev build-essential
+RUN apt-get install -y \
+    python3-dev \
+    default-libmysqlclient-dev \
+    build-essential \
+    pkg-config
 
 # copy requirements to /app
 COPY requirements.txt /app/
 
 # install Python requirements
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip 
+RUN pip install -r requirements.txt
 
 # copy the full app
 COPY . /app/

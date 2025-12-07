@@ -4,10 +4,10 @@ services:
     container_name: messaging_db
     restart: always
     environment:
-      MYSQL_DB: ${DB_NAME}
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}   # REQUIRED
     ports:
       - "3306:3306"
     volumes:
@@ -18,18 +18,17 @@ services:
     container_name: django-app
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
-    - .:/app
+      - .:/app
     ports:
       - "8000:8000"
     environment:
-      MYSQL_DB: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: db
-      DB_PORT: 5432
+      DB_PORT: 3306
     depends_on:
       - db
 
 volumes:
-  mysql_data
-
+  mysql_data:
