@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build ../messaging_app --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build ./messaging_app --file Dockerfile --tag my-image-name:$(date +%s)
     # - name: Publish Docker
     #   # You may pin to the exact commit or the version.
     #   # uses: elgohr/Publish-Docker-Github-Action@4feac4d53e4e55dcc5d3e2ad0ed2e0a76028ff7a
