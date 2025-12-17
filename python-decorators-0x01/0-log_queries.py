@@ -9,10 +9,11 @@ def log_queries(func):
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        # logging.basicConfig(
-        #     level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
-        # )
-        # logging.info(kwargs["query"])
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s | %(levelname)s | %(message)s",
+        )
+        logging.info(kwargs["query"])
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(f" {timestamp}  SQL query: {kwargs["query"]}")
         return func(*args, **kwargs)
@@ -30,6 +31,6 @@ def fetch_all_users(query):
     return results
 
 
-### fetch users while logging the query
+# fetch users while logging the query
 users = fetch_all_users(query="SELECT * FROM users")
 print(users)
