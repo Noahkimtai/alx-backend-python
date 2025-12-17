@@ -45,7 +45,7 @@ jobs:
         collation server:utf8mb4_general_ci
         mysql version:latest
         mysql root password:${{secrets.MYSQL_ROOT_PASSWORD}}
-        mysql database:
+        mysql database:test_db_ci
         mysql user:ci_user
         mysql password:${{secrets.MYSQL_CI_PASSWORD}}
     - name: Run Tests
