@@ -1,16 +1,14 @@
 #!/bin/bash
 
-echo "Starting Minikube..."
+set -e
+
+echo " Starting Kubernetes cluster using Minikube..."
 minikube start
 
-if [ $? -ne 0 ]; then
-    echo "Failed to start Minikube."
-    exit 1
-fi 
-
-echo "Minikube started successfully."
+echo " Verifying cluster status..."
 kubectl cluster-info
 
-echo "Retrieving list of pods in the default namespace.."
+echo " Retrieving available pods in all namespaces..."
+kubectl get pods --all-namespaces
 
-kubectl get pods
+echo " Kubernetes cluster is up and running!"
